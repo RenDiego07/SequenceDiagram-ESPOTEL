@@ -1,0 +1,61 @@
+@startuml
+title Signing Contract Module
+
+actor Postulant
+
+participant "User Interface" as UI
+participant "event:Input_handler" as handler
+participant "formdata: FormData" as FormData
+
+participant "Array" 
+participant "Notification System"
+participant "Digital Signature System" as DSS
+participant "Database" as DB
+
+
+Postulant -> UI: myContracts()
+
+
+UI --> Postulant: render()
+
+Postulant -> UI: SelectContract()
+
+UI --> Postulant: renderContract
+Postulant -> UI: signContractButton()
+
+UI --> Postulant: diplayCredentialsForms()
+
+Postulant -> UI: SignButton(input: Form, doc: Contract)
+
+UI ->handler: Sign(input:Form, doc: Contract )
+create FormData
+
+handler -> FormData: <<create>> FormData(input)
+handler-> FormData:entries(formdata)
+FormData --> handler: user_input_json= entries(formdata)
+handler -> Array:from(user_input_json)
+Array --> handler: user_input = from(user_input_json)
+handler -> DSS: checkCredentials(user_input)
+DSS --> handler: isValid = checkCredentials(user_input)
+
+alt isValid
+ handler -> DSS: SDDSignContract(doc: Contract)
+ DSS --> handler : contract = SDDSignContract(doc:contract)
+ handler -> DB : loadContract(contract)
+ DB --> handler
+  handler --> UI: flag = True
+  
+else isNotValid
+  handler --> UI: flag = False
+end
+
+alt flag
+  UI --> Postulant: Alert("Crendentials passed. Contract signed")
+  
+else !flag
+  UI --> Postulant: Alert("Incorrect Credentials")
+
+end
+
+
+@enduml

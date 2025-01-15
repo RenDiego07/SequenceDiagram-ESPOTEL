@@ -1,0 +1,51 @@
+@startuml
+title Review Project details
+
+actor system
+
+participant "Director"
+participant "projects_list:ArrayList<Project>" as projects_list
+participant "Alert"
+participant "personal: ArrayList<Personal>" as personal
+participant "Personal" as postulant
+participant "log: Console" as console
+system -> Director: reviewProjectsDetails
+Director -> projects_list: size(projects)
+projects_list --> Director: projects_size= size()
+alt project.size > 0
+  loop [int x = 0: x< len: x++]
+    Director -> projects_list: get(x)
+    projects_list --> Director: dir_project
+    Director -> personal: dir_project.getPersonal()
+    personal --> Director: personal_en_contratacion
+    Director -> personal: personal_en_contratacion.lenght()
+    personal --> Director: num_personal 
+    alt num_personal > 0
+      loop [int j= 0; j< num_personal; j++]
+          Director -> personal: get(j)
+          personal --> Director: postulant
+          Director -> Postulant: toString()
+          Postulant --> Director: info_p 
+          Director -> console: log(info)
+          console -->Director:
+          Director --> system
+
+      end
+      
+    
+    else num_personal <= 0
+      Director -> Alert: alert("There aren´t any postulat in this project")
+      Alert --> Director: 
+      Director --> system
+  end
+  
+else project.size ==0
+  Director -> Alert: alert("No projects available" )
+  Alert --> Director
+  Director --> system
+  
+end
+
+
+
+@enduml
