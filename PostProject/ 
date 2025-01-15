@@ -1,0 +1,34 @@
+@startuml
+Title Post Project 
+
+actor System 
+participant ":Director" as Director
+participant ":Profile" as Profile
+participant ":Project" as Project 
+
+participant ":Database" as Database
+
+
+activate Director
+System -> Director: (1) CreateProject(projectDetails: ArrayList<String>, profilesDetails: ArrayList<String> )
+
+deactivate Project
+
+Director -> Profile: (2) GenerateProfiles(profilesDetails)
+activate  Profile
+Profile --> Director: profiles
+deactivate Profile
+Director -> Project: (3) generateProject(projectDetails, profiles)
+activate Project
+Project --> Director: project
+deactivate Project
+Director -> Database: Post(project)
+activate Database
+Database --> Director
+deactivate Database
+
+Director --> System: End process
+@enduml
+
+
+
