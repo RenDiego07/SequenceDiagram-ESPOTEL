@@ -1,0 +1,51 @@
+@startuml
+Title View Contracts
+
+Actor System
+
+participant ":Manager" as Manager
+participant  "contract: ArrayList<Contract>" as contractsList
+participant ":Contract" as Contract
+participant ":Alert" as Alert
+participant "log: Console" as Console
+System -> Manager: (1) viewContract()
+activate Manager
+
+Manager -> contractsList: (2) size()
+activate contractsList
+contractsList --> Manager: num_contracts
+deactivate contractsList
+
+alt num_contracts >0
+  loop [int index = 0; x< num_contracts; index++]
+        
+        Manager -> contractsList: (3) get(index)
+        activate contractsList
+        contractsList --> Manager: contract
+        deactivate contractsList
+        Manager -> Contract: (4) contract.toString()
+        activate Contract
+        Contract --> Manager
+        deactivate Contract
+        Manager -> Console: (5) log()
+        activate Console
+        Console --> Manager
+        deactivate Console
+        
+  end
+else num_contracts <=0
+  
+    Manager -> Alert: (2.1) alert("currently you have no contracts to sign")
+    activate Alert
+    Alert --> Manager: 
+    deactivate Alert
+end
+
+Manager --> System: End process 
+deactivate Manager
+
+
+@enduml
+
+
+
