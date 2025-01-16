@@ -1,0 +1,52 @@
+@startuml
+Title WithDraw Postulation
+
+Actor System
+
+participant ":Aspirant" as Aspirant
+participant ":Postulation" as Postulation 
+participant ":DataBase" as DB
+participant ":PostulationRepository" as PostulationRepository
+participant ":Alert" as Alert
+System -> Aspirant: (1) withdrawPostulation(postulation: Postulation)
+activate Aspirant
+Aspirant -> Postulation: (2) getID()
+activate Postulation
+Postulation --> Aspirant: id
+deactivate Postulation
+
+
+Aspirant -> DB: (3) delete(id)
+activate DB
+
+DB -> PostulationRepository: (4) existID(id)
+activate PostulationRepository
+PostulationRepository --> DB
+deactivate PostulationRepository
+
+alt IDExist
+  
+  DB -> PostulationRepository: (5) deleteByID(id)
+  activate PostulationRepository
+  PostulationRepository --> DB:
+  deactivate PostulationRepository
+  DB -> Alert: (5.1) Alert("HTTP_202_ACCEPTED")
+  activate Alert
+  Alert --> DB:
+  deactivate Alert
+else !IDExist
+    DB -> Alert: (5.1.1) alert("HTTP_404_NOTFOUND")
+    activate Alert
+    Alert --> DB:
+    deactivate Alert
+
+end
+DB --> Aspirant
+deactivate DB
+Aspirant --> System:
+deactivate Aspirant 
+
+@enduml
+
+
+
