@@ -1,0 +1,73 @@
+@startuml
+Title ChangeCredentials
+
+actor System
+
+participant ":Profile Manager UI" as PM
+participant ":User Repository" as DB
+participant ":Postulant" as Postulant
+participant ":Alert" as Alert
+
+System -> PM: " (1) changePassword(id_postulant,newPassword, InputcurrentPassword )"
+activate PM
+
+PM -> PM: " (2) getPostulant(id_postulant)"
+activate PM
+
+PM -> DB: (3) getPostulantFromDB(id_postulant)
+activate DB
+DB --> PM: 
+deactivate DB
+PM --> PM: postulant 
+deactivate PM
+
+PM -> PM: (4) validatePassword(postulant, newPassword, InputcurrentPassword)
+activate PM
+
+PM -> Postulant: (5) getPassword()
+activate Postulant
+Postulant --> PM: authentical_password
+deactivate Postulant
+
+alt ["authentical_password == InputcurrentPassword"]
+
+PM -> Postulant: (6) setPassword(newPassword)
+activate Postulant
+Postulant --> PM
+deactivate Postulant
+
+PM -> DB: (7)  update(postulant)
+activate DB
+DB --> PM
+deactivate DB
+PM -> Alert: (8) Alert("Password updated")
+activate Alert 
+Alert --> PM
+deactivate Alert
+
+else ["else"]
+
+PM -> Alert: (9) Alert("The password you entered does not match your current password")
+activate Alert
+
+Alert --> PM
+deactivate Alert
+
+end
+PM --> PM
+deactivate PM 
+PM --> System: Process Finished
+deactivate PM
+
+
+
+
+
+
+
+
+
+@enduml
+
+
+
