@@ -1,0 +1,28 @@
+@startuml
+Title SendContractAspirant
+
+actor "Talento Humano" as TH
+
+participant ":PostulationUI" as UI
+participant ":Postulation" as Postulation
+participant ":Contract" as Contract
+
+TH -> UI: "LoadContract(postulation, contract)"
+activate UI
+
+UI -> Postulation: uploadDocument(contract)
+activate Postulation
+
+Postulation -> Contract: setState(NotSigned)
+activate Contract
+Contract --> Postulation: "state set to NotSigned"
+deactivate Contract
+
+Postulation --> UI: "Document uploaded"
+deactivate Postulation
+
+UI --> TH: "Process Finished: Contract state is NotSigned"
+deactivate UI
+
+@enduml
+
