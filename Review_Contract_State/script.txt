@@ -1,0 +1,43 @@
+@startuml
+Title Review Contract State
+
+actor Human_Resources
+
+participant   ":ContractManagmentUI" as ContractManagmentUI
+participant ":Postulation" as Postulation
+participant  ":Contract" as Contract 
+participant   ":Alert" as Alert
+participant  ":Manager" as Manager
+
+
+
+Human_Resources -> ContractManagmentUI: (1) SelectsPostulation(postulation)
+activate ContractManagmentUI
+
+
+ContractManagmentUI -> ContractManagmentUI: (2) getState(postulation)
+
+activate ContractManagmentUI
+
+ContractManagmentUI -> Postulation: (3) getContract()
+activate Postulation
+Postulation --> ContractManagmentUI:
+
+deactivate Postulation
+
+ContractManagmentUI -> Contract: (4) get_status()
+activate Contract
+Contract --> ContractManagmentUI
+deactivate Contract
+ContractManagmentUI --> ContractManagmentUI
+deactivate ContractManagmentUI
+
+ContractManagmentUI --> Human_Resources
+deactivate ContractManagmentUI
+
+
+
+@enduml
+
+
+
