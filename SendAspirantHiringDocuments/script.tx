@@ -1,0 +1,41 @@
+@startuml
+Title Send Aspirant Hiring Document 
+
+Actor Human_Resources 
+participant ":AcceptedPostulationComponent" as  HRComponent
+participant ":Postulation" as Postulation
+participant ":PostulationRepository" as DB
+
+
+
+Human_Resources -> HRComponent: (1) Accept(postulationID)
+activate HRComponent
+
+HRComponent -> HRComponent: (2) getPostulation(postulationID)
+activate HRComponent
+
+HRComponent -> DB: (3) findBy(postulationID)
+activate DB
+DB --> HRComponent: 
+deactivate DB
+HRComponent --> HRComponent
+deactivate HRComponent
+
+HRComponent -> Postulation: (4) setStatus()
+activate Postulation
+Postulation --> HRComponent
+HRComponent -> Postulation: (5) setDocuments(Document)
+Postulation --> HRComponent
+deactivate Postulation
+HRComponent -> DB: (6) POST(postulation)
+activate DB
+DB --> HRComponent
+deactivate HRComponent
+
+HRComponent --> Human_Resources: Process Finished
+
+
+@enduml
+
+
+
