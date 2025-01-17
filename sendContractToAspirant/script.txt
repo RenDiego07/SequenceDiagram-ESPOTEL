@@ -7,13 +7,13 @@ participant ":PostulationUI" as UI
 participant ":Postulation" as Postulation
 participant ":Contract" as Contract
 
-TH -> UI: "LoadContract(postulation, contract)"
+TH -> UI: "(1) LoadContract(postulation, contract)"
 activate UI
 
-UI -> Postulation: uploadDocument(contract)
+UI -> Postulation: (2) uploadDocument(contract)
 activate Postulation
 
-Postulation -> Contract: setState(NotSigned)
+Postulation -> Contract: (3) setState(NotSigned)
 activate Contract
 Contract --> Postulation: "state set to NotSigned"
 deactivate Contract
@@ -21,7 +21,7 @@ deactivate Contract
 Postulation --> UI: "Document uploaded"
 deactivate Postulation
 
-UI --> TH: "Process Finished: Contract state is NotSigned"
+UI --> TH: "Process Finished: Contract added to aspirant's Postulation"
 deactivate UI
 
 @enduml
