@@ -1,0 +1,51 @@
+@startuml
+Title ChangeProfileSalary
+
+actor ":Human Resources" as HR
+participant ":Profile Review UI" as PR
+
+participant ":Profile" as Profile
+participant ":ProfileRepository" as ProfileRepository
+participant ":Alert" as Alert
+HR ->  PR:  (1) ChangeSalary(profile, salary) 
+activate PR
+
+PR ->  Profile: (2) setSalary(salary)
+activate Profile
+Profile --> PR:
+deactivate Profile
+
+PR -> ProfileRepository: (3) update(profile)
+activate ProfileRepository
+ProfileRepository --> PR:  vbool
+deactivate ProfileRepository
+
+alt [vbool]
+  PR -> Alert: (4) Alert("Salary changed")
+  activate Alert
+  Alert --> PR
+  deactivate Alert
+else [!vbool]
+  PR -> Alert: (4.1) Alert("The Salary didn't meet the minium wage requirement )
+  activate Alert
+  Alert --> PR
+  deactivate Alert 
+end
+
+PR --> HR: "Process finished"
+deactivate PR
+
+
+
+
+
+
+
+
+
+
+
+@enduml
+
+
+
