@@ -1,0 +1,49 @@
+@startuml
+Title SendContractManager
+
+actor "Human Resources" as HR
+
+
+participant ":ContractManagerUI" as UI
+participant ":Manager" as Manager
+participant ":ArrayList<Contract>" as collection
+participant ":Manager" as Manager
+participant ":UserRepository" as DB
+
+HR -> UI: "SendContract(Contract, Manager)"
+activate UI
+
+
+UI -> Manager: getContracts()
+activate Manager
+
+Manager --> UI: contracts
+deactivate Manager 
+
+
+UI -> collection: addContract(Contract)
+activate collection
+collection --> UI:
+deactivate collection
+
+UI -> Manager: getID()
+activate Manager
+Manager --> UI: id 
+deactivate Manager
+
+UI -> DB: updatebyID(id, Manager)
+activate DB
+
+DB --> UI 
+deactivate DB
+
+UI --> HR: process Finished 
+deactivate UI
+
+
+
+
+@enduml
+
+
+
