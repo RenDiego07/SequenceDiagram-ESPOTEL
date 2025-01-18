@@ -1,0 +1,34 @@
+@startuml
+Title "Edit Hiring Forms"
+
+actor "Human Resource" as HR
+
+participant ":Hiring Documents UI" as UI
+participant ":Postulation" as Postulation
+participant ":Format Hiring Documents" as HiringDocs
+participant ":Alert" as Alert 
+
+HR -> UI: (1) selectPostulation(Postulation)
+activate UI
+
+UI -> Postulation: (2) getHiringDocuments()
+activate Postulation 
+Postulation --> UI
+deactivate Postulation
+
+UI -> HiringDocs: (3) edit(formsData)
+activate HiringDocs
+HiringDocs --> UI
+deactivate HiringDocs
+
+UI -> Alert: (4) Alert("Hiring Docs updated")
+activate Alert
+Alert --> UI 
+deactivate Alert
+
+UI --> HR: Process Finished 
+deactivate HR
+
+
+@enduml
+

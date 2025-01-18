@@ -1,0 +1,36 @@
+@startuml
+Title Login
+
+actor "System" as System
+
+participant ":Login In UI" as UI
+
+participant ":User_Repository" as DB
+participant ":Alert" as Alert
+System -> UI: LoginAccount(mail, password)
+activate UI
+UI -> DB: findUser(mail, password)
+activate DB 
+DB --> UI: 
+deactivate DB
+
+alt [userExists]
+   UI -> DB : loadUserInfo(User)
+   activate DB 
+   DB --> UI:
+   deactivate DB
+      
+else [!userExists]
+  UI -> Alert: Alert("Incorrect email or password")
+  activate Alert
+  Alert --> UI 
+  deactivate Alert
+end
+UI --> System
+deactivate UI
+
+
+
+
+@enduml
+
