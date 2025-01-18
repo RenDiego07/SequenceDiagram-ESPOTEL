@@ -1,0 +1,28 @@
+@startuml
+
+title Filtering by Project, Role, and Profile
+
+actor "Talento Humano" as TH
+participant "Filter UI" as UI
+participant "Filter Service" as Service
+participant "Project Repository " as DB
+
+TH -> UI: selectFilter(type, criteria)
+activate UI
+
+UI -> Service: processFilter(type, criteria)
+activate Service
+
+Service -> DB: queryResults(type, criteria)
+activate DB
+DB --> Service: filteredResults
+deactivate DB
+
+Service --> UI: filteredResults
+deactivate Service
+
+UI --> TH: displayFilteredResults(filteredResults)
+deactivate UI
+
+@enduml
+
